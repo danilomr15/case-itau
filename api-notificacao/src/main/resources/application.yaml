@@ -1,0 +1,40 @@
+spring:
+  jpa:
+    database-platform:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5434/notificacao
+    username: db_api_notificacao
+    password: notificacao123
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    virtual-host: spring_host
+    username: danilomr
+    password: pass123
+  mail:
+    host: smtp.zoho.com
+    port: 587
+    username: danilomrcase@zohomail.com
+    password: Danilomr15
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+
+queues:
+  add-restriction-queue: add_restriction_queue
+  delete-restriction-queue: delete_restriction_queue
+  charge-queue: charge_queue
+
+email:
+  sender: danilomrcase@zohomail.com
+  subject: Quite agora sua dívida
+
+logging:
+  level:
+    root: DEBUG

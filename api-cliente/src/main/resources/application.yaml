@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    database-platform:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/cliente
+    username: db_api_cliente
+    password: cliente123
+
+logging:
+  level:
+    root: DEBUG

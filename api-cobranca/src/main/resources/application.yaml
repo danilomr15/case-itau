@@ -1,0 +1,35 @@
+spring:
+  jpa:
+    database-platform:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/cobranca
+    username: db_api_cobranca
+    password: cobranca123
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    virtual-host: spring_host
+    username: danilomr
+    password: pass123
+
+queues:
+  add-debit-queue: add_debit_queue
+exchanges:
+  charge-email-exchange: charge_exchange
+  add-restriction-exchange: add_restriction_exchange
+  delete-restriction-exchange: delete_restriction_exchange
+routing-keys:
+  charge-email-routing-key: charge_routing_key
+  add-restriction-routing-key: add_restriction_routing_key
+  delete-restriction-routing-key: delete_restriction_routing_key
+
+charges:
+  attempts: 3
+
+logging:
+  level:
+    root: DEBUG

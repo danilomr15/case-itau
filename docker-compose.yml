@@ -1,0 +1,93 @@
+version: '3.1'
+services:
+
+  api-cliente:
+    image: api-cliente
+    build: api-cliente/.
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-cliente
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-cliente:5432/cliente
+      - SPRING_DATASOURCE_USERNAME=db_api_cliente
+      - SPRING_DATASOURCE_PASSWORD=cliente123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+
+  api-cobranca:
+    image: api-cobranca
+    build: api-cobranca/.
+    restart: always
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db-cobranca
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-cobranca:5432/cobranca
+      - SPRING_DATASOURCE_USERNAME=db_api_cobranca
+      - SPRING_DATASOURCE_PASSWORD=cobranca123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+
+  api-notificacao:
+    image: api-notificacao
+    build: api-notificacao/.
+    restart: always
+    ports:
+      - "8082:8080"
+    depends_on:
+      - db-notificacao
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-notificacao:5432/notificacao
+      - SPRING_DATASOURCE_USERNAME=db_api_notificacao
+      - SPRING_DATASOURCE_PASSWORD=notificacao123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+
+  db-cliente:
+    image: postgres
+    container_name: db-cliente
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=cliente
+      - POSTGRES_USER=db_api_cliente
+      - POSTGRES_PASSWORD=cliente123
+    volumes:
+      - ./postgresql/script-cliente.sql:/docker-entrypoint-initdb.d/script.sql
+
+  db-cobranca:
+    image: postgres
+    container_name: db-cobranca
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=cobranca
+      - POSTGRES_USER=db_api_cobranca
+      - POSTGRES_PASSWORD=cobranca123
+    volumes:
+      - ./postgresql/script-cobranca.sql:/docker-entrypoint-initdb.d/script.sql
+
+  db-notificacao:
+    image: postgres
+    container_name: db-notificacao
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_DB=notificacao
+      - POSTGRES_USER=db_api_notificacao
+      - POSTGRES_PASSWORD=notificacao123
+    volumes:
+      - ./postgresql/script-notificacao.sql:/docker-entrypoint-initdb.d/script.sql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_USER=danilomr
+      - RABBITMQ_PASSWORD=pass123
+      - RABBITMQ_PID_FILE=/var/lib/rabbitmq/mnesia/rabbitmq
